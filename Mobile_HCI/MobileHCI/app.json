@@ -1,0 +1,49 @@
+{
+  "expo": {
+    "name": "MobileHCI",
+    "slug": "MobileHCI",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {},
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "Allow $(Todo) to use Face ID."
+      },
+      "bundleIdentifier": "com.patokiehl.MobileHCI"
+    },
+    "android": {
+      "adaptiveIcon": {},
+      "permissions": [
+        "android.permission.USE_BIOMETRIC",
+        "android.permission.USE_FINGERPRINT",
+        "android.permission.RECORD_AUDIO"
+      ]
+    },
+    "web": {},
+    "plugins": [
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Allow $(Todo) to use Face ID."
+        }
+      ],
+      [
+        "@react-native-voice/voice",
+        {
+          "microphonePermission": "Allow voice permission?",
+          "speechRecognitionPermission": "Allow speech thingy"
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "f13d378b-e675-4f5b-bf94-8c9a0d403f58"
+      }
+    }
+  }
+}
