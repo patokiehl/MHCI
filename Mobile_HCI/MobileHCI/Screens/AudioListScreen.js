@@ -1,56 +1,113 @@
-// AudioListScreen.js
+// ListenToRecordingsScreen.js
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, Button, StyleSheet } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import { Audio } from 'expo-av';
+import * as Speech from 'expo-speech'
 
-const AudioListScreen = () => {
+import { connectToDatabase, fetchRecordings } from '../database/audioRecordingsDB';
+import PanGestureComponent from '../components/PanComponents/PanGestureComponent'; 
+import { playMorseVibrationHaptic } from "../components/MorseCode/MorseCodePlayerComponent"
+import HomeLayout from '../components/Layout/HomeLayout';
+
+
+Speech.speak("Audio Listening page");
+connectToDatabase();
+
+const formatDuration = (durationMillis) => {
+  const minutes = Math.floor(durationMillis / 60000);
+  const seconds = Math.round((durationMillis % 60000) / 1000);
+  return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+};
+
+const ListenToRecordingsScreen = ({navigation}) => {
   const [recordings, setRecordings] = useState([]);
+  const [sound, setSound] = useState(null);
 
-  const playRecording = async (uri) => {
+  useEffect(() => {
+    Speech.speak("Audio Listening page");
+    playMorseVibrationHaptic('C');
+    fetchRecordings().then((data) => {
+      const limit_data = data.slice(-6);
+      setRecordings(limit_data);
+      const count = limit_data.length;
+      Speech.speak(`You have ${count} recordings.`);
+    }).catch(console.error);
+  }, []);
+
+  const playSound = async (uri) => {
     const { sound } = await Audio.Sound.createAsync({ uri });
+    setSound(sound);
+
     await sound.playAsync();
   };
 
-  const addRecording = (newUri) => {
-    setRecordings([...recordings, newUri]);
-  };
-
   useEffect(() => {
-    // This is where you would load recordings from your "database"
-    // For this example, we're just using local state
-  }, []);
+    return sound
+      ? () => {
+          sound.unloadAsync();
+        }
+      : undefined;
+  }, [sound]);
 
-  return (
-    <View style={styles.container}>
-      <FlatList
-        data={recordings}
-        keyExtractor={(item) => item}
-        renderItem={({ item }) => (
-          <View style={styles.row}>
-            <Text style={styles.paragraph}>{item}</Text>
-            <Button title="Play" onPress={() => playRecording(item)} />
-          </View>
-        )}
+  const handleGesture = (gesture) => {
+    if (gesture === 'swipeDown') {
+        navigation.navigate("Home");
+        return;
+    }
+
+    const recordingIndexMap = {
+        swipeLeft: 0,
+        swipeRight: 1,
+        swipeUp: 2,
+        doubleTap: 3,
+        tripleTap: 4,  
+        longPress: 5
+    };
+
+    const recordingIndex = recordingIndexMap[gesture];
+    if (recordingIndex !== undefined && recordings.length > recordingIndex) {
+        playSound(recordings[recordingIndex].uri);
+    }
+};
+
+const getGestureText = (index) => {
+  const gestures = ['(Swipe Left)', '(Swipe Right)', '(Swipe Up)', '(Double Tap)', '(Triple Tap)', '(Long Press)'];
+  return gestures[index] || '';
+};
+
+
+
+return (
+  <HomeLayout navigation={navigation}>
+  <View style={styles.container}>
+      <View style={styles.recordingsContainer}>
+          {recordings.map((recording, index) => (
+              <View key={index} style={styles.recordingItem}>
+                  <Text style={styles.recordingTitle}>{index + 1}: {recording.title} {getGestureText(index)}</Text>
+              </View>
+          ))}
+      </View>
+      <PanGestureComponent
+          onSwipeLeft={() => handleGesture('swipeLeft')}
+          onSwipeRight={() => handleGesture('swipeRight')}
+          onSwipeUp={() => handleGesture('swipeUp')}
+          onSwipeDown={() => handleGesture('swipeDown')}
+          onDoubleTap={() => handleGesture('doubleTap')}
+          onTripleTap={() => handleGesture('tripleTap')}
+          onLongPress={() => handleGesture('longPress')}
       />
-    </View>
-  );
+  </View>
+  </HomeLayout>
+);
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: 20,
     justifyContent: 'center',
-    paddingTop: 20,
-  },
-  row: {
-    flexDirection: 'row',
-    padding: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: '#cccccc',
-  },
-  paragraph: {
-    marginRight: 15,
+    alignItems: 'center',
   },
 });
 
-export default AudioListScreen;
+export default ListenToRecordingsScreen;

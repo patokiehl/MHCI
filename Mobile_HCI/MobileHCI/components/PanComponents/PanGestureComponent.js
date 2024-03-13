@@ -19,6 +19,7 @@ const PanGestureComponent = ({
   const doubleTapRef = useRef();
   const tripleTapRef = useRef();
   const [tapCount, setTapCount] = useState(0);
+  const opacity = useRef(new Animated.Value(0.3)).current; // Opacity animated value
 
   const resetPosition = () => {
     Animated.spring(pan, {
@@ -31,6 +32,13 @@ const PanGestureComponent = ({
     [{ nativeEvent: { translationX: pan.x, translationY: pan.y } }],
     { useNativeDriver: false }
   );
+  const onPressIn = () => {
+    opacity.setValue(1); // Change opacity instantly to 1 when pressed
+  };
+
+  const onPressOut = () => {
+    opacity.setValue(0.3); // Revert opacity to 0.3 when not pressed
+  };
 
   const handleSingleTap = () => {
     console.log("Single tap detected");
@@ -85,6 +93,7 @@ const PanGestureComponent = ({
         <PanGestureHandler
           onGestureEvent={handlePanGesture}
           onHandlerStateChange={({ nativeEvent }) => {
+            onPressIn();
             if (nativeEvent.state === State.END) {
               if (nativeEvent.translationX > 60) {
                 onSwipeRight?.();
@@ -96,6 +105,7 @@ const PanGestureComponent = ({
                 onSwipeDown?.();
               }
               resetPosition();
+              onPressOut();
             }
           }}
         >
@@ -123,7 +133,8 @@ const PanGestureComponent = ({
                     onHandlerStateChange={onSingleTapEvent}
                     waitFor={[doubleTapRef, tripleTapRef]}
                   >
-                    <View style={styles.draggableButton} />
+                    <Animated.View style={[styles.draggableButton, { opacity }]}>
+                      </Animated.View>
                   </TapGestureHandler>
                 </TapGestureHandler>
               </TapGestureHandler>
@@ -145,7 +156,7 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     borderRadius: 75,
-    backgroundColor: 'red',
+    backgroundColor: 'grey',
   },
 });
 

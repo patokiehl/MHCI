@@ -1,8 +1,8 @@
-import * as SQLite from "expo-sqlite";
+// import * as SQLite from "expo-sqlite";
 
-export const connectToDatabase = () => {
-  return SQLite.openDatabase("MHCI.db");
-};
+// export const connectToDatabase = () => {
+//   return SQLite.openDatabase("MHCI.db");
+// };
 
 
 // const createSongsTableQuery = `

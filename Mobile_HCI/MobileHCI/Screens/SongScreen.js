@@ -6,6 +6,7 @@ import * as Speech from 'expo-speech';
 
 import PanGestureComponent from "../components/PanComponents/PanGestureComponent";
 import HomeLayout from '../components/Layout/HomeLayout';
+import { playMorseVibrationHaptic } from "../components/MorseCode/MorseCodePlayerComponent"
 
 const songsData = [
   {
@@ -41,11 +42,13 @@ const SongsScreen = ({ navigation }) => {
 
     useEffect(() => {
         Speech.speak("song screen");
+        playMorseVibrationHaptic('D');
     }, []);
 
 
     const playSong = async (song) => {
         if (currentSong) {
+            await currentSong.sound.setVolumeAsync(1.0);
             await currentSong.sound.stopAsync();
         }
 
@@ -53,14 +56,14 @@ const SongsScreen = ({ navigation }) => {
         setCurrentSong({ ...song, sound });
         await sound.playAsync();
         setIsPlaying(true);
-        setPlayMode(true);  // Enter play mode when a song starts playing
+        setPlayMode(true); 
     };
 
     const stopPlaying = async () => {
         if (currentSong && isPlaying) {
             await currentSong.sound.stopAsync();
             setIsPlaying(false);
-            setPlayMode(false);  // Exit play mode when the song stops
+            setPlayMode(false);
         }
     };
     const selectSongByGesture = (index) => {
@@ -174,7 +177,7 @@ const styles = StyleSheet.create({
         paddingTop: 20,
     },
     songsContainer: {
-        marginTop: 20,
+        marginTop: -100,
     },
     songItem: {
         margin: 10,

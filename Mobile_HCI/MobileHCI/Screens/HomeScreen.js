@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import * as Speech from 'expo-speech';
 
@@ -7,22 +7,27 @@ import { playMorseVibrationHaptic } from "../components/MorseCode/MorseCodePlaye
 import { playMorseVibration } from "../components/MorseCode/MorseCodeVibration"
 import HomeLayout from "../components/Layout/HomeLayout";
 
-// haptics
-// gestures
-// text to speech
-// voice notes
-// audio play back
-
 const HomeScreen = ({ navigation }) => {
+  const [firstTime, setFirstTime] = useState(false);
+
+  useEffect(() => {
+    console.log(firstTime)
+    if (firstTime) {
+      Speech.speak("You are on the app");
+      setFirstTime(false);
+    } else {
+      Speech.speak("You are on the home page");
+      playMorseVibrationHaptic('A');
+    }
+  }, []);
+
+
   const handlePress = (screenName, buttonLabel) => {
     navigation.navigate(screenName);
     //Speech.speak(`You have selected button ${buttonLabel}`);
-    //playMorseVibrationHaptic(buttonLabel);
     //playMorseVibration(buttonLabel)
 };
 
-Speech.speak("you are on the app");
-  
 
   return (
     <HomeLayout navigation={navigation}>
@@ -51,8 +56,8 @@ Speech.speak("you are on the app");
           <View style={styles.containerPan}>
           <PanGestureComponent
               onSwipeRight={() => navigation.navigate('Songs')}
-              onSwipeLeft={() => navigation.navigate('AudioList')}
-              onSwipeUp={() => navigation.navigate('AudioRecord')}
+              onSwipeLeft={() => navigation.navigate('AudioRecord')}
+              onSwipeUp={() => navigation.navigate('AudioList')}
               onSwipeDown={() => navigation.navigate('Home')}
               />
           </View>
@@ -63,12 +68,6 @@ Speech.speak("you are on the app");
               style={[styles.button, styles.rightButton]}
             >
               <Text style={styles.buttonText}>Songs(swipe right)</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => handlePress('DailyNote', 'D')} 
-              style={[styles.button, styles.rightButton]}
-            >
-              <Text style={styles.buttonText}>Daily Note (double tap)</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -96,13 +95,13 @@ const styles = StyleSheet.create({
   },
   
   leftButtonsContainer: {
-    flex: 0.45,
+    flex: 1,
     marginRight: 30,
     marginLeft: -15,
   },
   
   rightButtonsContainer: {
-    flex: 0.45, 
+    flex: 1, 
     marginLeft: 30,
     marginRight: -15,
   },
@@ -132,13 +131,13 @@ const styles = StyleSheet.create({
   },
   
   leftButton: {
-    backgroundColor: '#6ECB63',
+    backgroundColor: '#93E9BE',
     width: '100%',
     paddingVertical: 35,
   },
   
   rightButton: {
-    backgroundColor: '#6ECB63',
+    backgroundColor: '#93E9BE',
     width: '100%',
     paddingVertical: 35,
   },
@@ -149,7 +148,7 @@ const styles = StyleSheet.create({
   },
   
   buttonText: {
-    color: "white",
+    color: "black",
     fontSize: 10,
     fontWeight: "bold",
   },  
