@@ -4,14 +4,16 @@ const db = SQLite.openDatabase('recordings.db');
 
 
 const initDatabase = () => {
-    db.transaction(tx => {
+  db.transaction(tx => {
       tx.executeSql(
-        "CREATE TABLE IF NOT EXISTS recordings (id INTEGER PRIMARY KEY NOT NULL, uri TEXT, duration INTEGER);",
-        [],
-        (_, error) => console.log('Error creating table', error)
+          "CREATE TABLE IF NOT EXISTS recordings (id INTEGER PRIMARY KEY NOT NULL, uri TEXT, duration INTEGER);",
+          [],
+          null,  // Success callback is not needed if you're just logging the error
+          (tx, error) => { console.log('Error creating table', error); }  // Correct error handling
       );
-    });
-  };
+  });
+};
+
   
 
 

@@ -7,8 +7,7 @@ import * as Speech from 'expo-speech';
 import PanGestureComponent from '../components/PanComponents/PanGestureComponent';
 import HomeLayout from '../components/Layout/HomeLayout';
 import speechManager from '../components/SpeechManager';
-import { playMorseVibrationHaptic } from "../components/MorseCode/MorseCodePlayerComponent"
-
+import { playMorseVibration} from '../components/MorseCode/MorseCodeVibration'
 import {saveRecordingToDatabase } from '../database/audioRecordingsDB'
 
 const AudioRecordScreen = ({ navigation, route }) => {
@@ -17,8 +16,8 @@ const AudioRecordScreen = ({ navigation, route }) => {
   const flashingOpacity = useRef(new Animated.Value(0)).current; // For flashing effect
 
   useEffect(() => {
-    Speech.speak("Audio Recording Screen");
-    playMorseVibrationHaptic('B');
+    //Speech.speak("Audio Recording Screen");
+    playMorseVibration('B');
     (async () => {
       await Audio.requestPermissionsAsync();
       await Audio.setAudioModeAsync({
@@ -78,7 +77,7 @@ const AudioRecordScreen = ({ navigation, route }) => {
         await saveRecordingToDatabase(recording, duration);
 
         setRecording(null);
-        Speech.speak("Recording saved successfully");
+        //Speech.speak("Recording saved successfully");
     } catch (error) {
         console.error('Error in stopRecording:', error);
     }

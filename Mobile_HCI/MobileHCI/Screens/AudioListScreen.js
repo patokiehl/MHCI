@@ -6,11 +6,11 @@ import * as Speech from 'expo-speech'
 
 import { connectToDatabase, fetchRecordings } from '../database/audioRecordingsDB';
 import PanGestureComponent from '../components/PanComponents/PanGestureComponent'; 
-import { playMorseVibrationHaptic } from "../components/MorseCode/MorseCodePlayerComponent"
+import { playMorseVibration } from '../components/MorseCode/MorseCodeVibration';
 import HomeLayout from '../components/Layout/HomeLayout';
 
 
-Speech.speak("Audio Listening page");
+//Speech.speak("Audio Listening page");
 connectToDatabase();
 
 const formatDuration = (durationMillis) => {
@@ -24,13 +24,13 @@ const ListenToRecordingsScreen = ({navigation}) => {
   const [sound, setSound] = useState(null);
 
   useEffect(() => {
-    Speech.speak("Audio Listening page");
-    playMorseVibrationHaptic('C');
+    //Speech.speak("Audio Listening page");
+    playMorseVibration('C');
     fetchRecordings().then((data) => {
       const limit_data = data.slice(-6);
       setRecordings(limit_data);
       const count = limit_data.length;
-      Speech.speak(`You have ${count} recordings.`);
+      //Speech.speak(`You have ${count} recordings.`);
     }).catch(console.error);
   }, []);
 

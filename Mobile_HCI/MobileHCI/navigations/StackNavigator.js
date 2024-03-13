@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "../Screens/HomeScreen";
 // import GestureScreen from "../Screens/GestureScreen";
 // import PanScreen from "../Screens/PanSCreen";
-// //import VoiceRecognitionScreen from "../Screens/VoiceRecognitionScreen";
+//import VoiceRecognitionScreen from "../Screens/VoiceRecognitionScreen";
 // import AudioPlaybackScreen from "../Screens/AudioPlaybackScreen";
 // import TestScreen from "../Screens/testScreen";
 import AudioRecordScreen from "../Screens/AudioRecordScreen";

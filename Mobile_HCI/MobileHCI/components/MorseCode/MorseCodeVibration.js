@@ -13,12 +13,12 @@ const playMorseVibration = (letter) => {
     const dotsAndDashes = morseCode[letter.toUpperCase()];
     if (!dotsAndDashes) return;
 
-    console.log(`Playing Morse for ${letter}: ${dotsAndDashes}`);
+    //console.log(`Playing Morse for ${letter}: ${dotsAndDashes}`);
 
     let totalTime = 0;
     dotsAndDashes.split('').forEach(symbol => {
         setTimeout(() => {
-            console.log(`Vibrating for ${symbol === '.' ? 'dot' : 'dash'}`);
+            //console.log(`Vibrating for ${symbol === '.' ? 'dot' : 'dash'}`);
             Vibration.vibrate(symbol === '.' ? dotDuration : dashDuration);
         }, totalTime);
 

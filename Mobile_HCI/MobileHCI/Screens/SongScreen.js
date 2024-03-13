@@ -6,7 +6,7 @@ import * as Speech from 'expo-speech';
 
 import PanGestureComponent from "../components/PanComponents/PanGestureComponent";
 import HomeLayout from '../components/Layout/HomeLayout';
-import { playMorseVibrationHaptic } from "../components/MorseCode/MorseCodePlayerComponent"
+import { playMorseVibration } from '../components/MorseCode/MorseCodeVibration';
 
 const songsData = [
   {
@@ -41,8 +41,8 @@ const SongsScreen = ({ navigation }) => {
     const [playMode, setPlayMode] = useState(false);
 
     useEffect(() => {
-        Speech.speak("song screen");
-        playMorseVibrationHaptic('D');
+        //Speech.speak("song screen");
+        playMorseVibration('D');
     }, []);
 
 
@@ -84,7 +84,7 @@ const SongsScreen = ({ navigation }) => {
                     break;
                 case 'swipeDown':
                     stopPlaying();
-                    Speech.speak("out of play mode");
+                    //Speech.speak("out of play mode");
                     break;
                 case 'doubleTap':
                     if (isPlaying) {

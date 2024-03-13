@@ -11,13 +11,12 @@ const HomeScreen = ({ navigation }) => {
   const [firstTime, setFirstTime] = useState(false);
 
   useEffect(() => {
-    console.log(firstTime)
     if (firstTime) {
-      Speech.speak("You are on the app");
+      //Speech.speak("You are on the app");
       setFirstTime(false);
     } else {
-      Speech.speak("You are on the home page");
-      playMorseVibrationHaptic('A');
+      //Speech.speak("You are on the home page");
+      playMorseVibration('A');
     }
   }, []);
 
