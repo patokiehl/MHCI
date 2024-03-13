@@ -2,9 +2,9 @@ import React from "react";
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import * as Speech from 'expo-speech';
 
-import PanComponent from "../components/PanComponent";
-import { playMorseVibrationHaptic } from "../components/MorseCodePlayerComponent"
-import { playMorseVibration } from "../components/MorseCodeVibration"
+import PanGestureComponent from "../components/PanComponents/PanGestureComponent";
+import { playMorseVibrationHaptic } from "../components/MorseCode/MorseCodePlayerComponent"
+import { playMorseVibration } from "../components/MorseCode/MorseCodeVibration"
 import HomeLayout from "../components/Layout/HomeLayout";
 
 // haptics
@@ -36,51 +36,39 @@ Speech.speak("you are on the app");
         <View style={styles.buttonsContainer}>
           <View style={styles.leftButtonsContainer}>
             <TouchableOpacity
-              onPress={() => handlePress('Diary', 'A')}
+              onPress={() => handlePress('AudioRecord', 'A')}
               style={[styles.button, styles.leftButton]}
             >
-              <Text style={styles.buttonText}>Voice Notes (Button A)</Text>
+              <Text style={styles.buttonText}>Voice Notes (swipe Left) </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => handlePress('Audio', 'C')} 
+              onPress={() => handlePress('AudioList', 'C')} 
               style={[styles.button, styles.rightButton]}
             >
-              <Text style={styles.buttonText}>Stored Audio (Button C) (swipe up)</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => handlePress('Pan', 'E')} 
-              style={[styles.button, styles.rightButton]}
-            >
-              <Text style={styles.buttonText}>(Panan E) </Text>
+              <Text style={styles.buttonText}>Stored Audio (swipe up)</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.containerPan}>
-          <PanComponent
-              onSwipeRight={() => navigation.navigate('Home')}
-              onSwipeLeft={() => navigation.navigate('Gestures')}
-              onSwipeUp={() => navigation.navigate('Audio')}
-              onSwipeDown={() => navigation.navigate('Test')}
+          <PanGestureComponent
+              onSwipeRight={() => navigation.navigate('Songs')}
+              onSwipeLeft={() => navigation.navigate('AudioList')}
+              onSwipeUp={() => navigation.navigate('AudioRecord')}
+              onSwipeDown={() => navigation.navigate('Home')}
               />
           </View>
           
           <View style={styles.rightButtonsContainer}>
             <TouchableOpacity
-              onPress={() => handlePress('Test', 'B')}
+              onPress={() => handlePress('Songs', 'B')}
               style={[styles.button, styles.rightButton]}
             >
-              <Text style={styles.buttonText}>(test B)(swipe down)</Text>
+              <Text style={styles.buttonText}>Songs(swipe right)</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => handlePress('Gestures', 'D')} 
+              onPress={() => handlePress('DailyNote', 'D')} 
               style={[styles.button, styles.rightButton]}
             >
-              <Text style={styles.buttonText}>(Gestures (D)) (swipe left)</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => handlePress('Vibrations', 'F')} 
-              style={[styles.button, styles.rightButton]}
-            >
-              <Text style={styles.buttonText}>(Button F)</Text>
+              <Text style={styles.buttonText}>Daily Note (double tap)</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -108,13 +96,13 @@ const styles = StyleSheet.create({
   },
   
   leftButtonsContainer: {
-    flex: 0.35, // Take 25% of the horizontal space
+    flex: 0.45,
     marginRight: 30,
     marginLeft: -15,
   },
   
   rightButtonsContainer: {
-    flex: 0.35, // Take 25% of the horizontal space
+    flex: 0.45, 
     marginLeft: 30,
     marginRight: -15,
   },
